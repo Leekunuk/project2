@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">회원가입</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm" action="/user/signup" method="post">
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" name="userName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">이메일</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="you@example.com" required>
+                            <div class="input-group-append">
+                                <button type="button" id="checkEmailBtn" class="btn btn-info">중복 확인</button>
+                            </div>
+                        </div>
+                        <small id="emailCheckMessage" class="form-text"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userPassword">비밀번호</label>
+                        <input type="password" class="form-control" id="userPassword" name="userPw" required>
+                        <small id="passwordHelp" class="form-text text-muted"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        <small id="confirmPasswordHelp" class="form-text text-muted"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">연락처</label>
+                        <input type="tel" class="form-control" id="phone" name="userPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="agreement" name="agreement" required>
+                            <label class="custom-control-label" for="agreement">개인정보 수집 및 이용에 동의합니다.</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary" id="signupSubmitBtn" disabled>가입하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+	    var $userPassword = $('#userPassword');
+	    var $confirmPassword = $('#confirmPassword');
+	    var $submitBtn = $('#signupSubmitBtn');
+	    var $passwordHelp = $('#passwordHelp');
+	    var $confirmPasswordHelp = $('#confirmPasswordHelp');
+	    var emailValid = false;
+	    var passwordValid = false;
+	    var confirmPasswordValid = false;
+
+	    // 연락처 자동 포맷팅 (기존 코드 유지)
+	    $('#phone').on('input', function() {
+	        var phoneValue = $(this).val().replace(/[^0-9]/g, '');
+	        if (phoneValue.length < 4) {
+	            $(this).val(phoneValue);
+	        } else if (phoneValue.length < 7) {
+	            $(this).val(phoneValue.replace(/(\d{3})(\d{1,4})/, '$1-$2'));
+	        } else {
+	            $(this).val(phoneValue.replace(/(\d{3})(\d{1,4})(\d{1,4})/, '$1-$2-$3'));
+	        }
+	    });
+
+	    // 비밀번호 유효성 검사 함수
+	    function validatePassword() {
+	        var password = $userPassword.val();
+	        var isValid = true;
+	        
+	        var lengthValid = password.length >= 8;
+	        var hasUpperCase = /[A-Z]/.test(password);
+	        var hasLowerCase = /[a-z]/.test(password);
+	        var hasNumbers = /\d/.test(password);
+	        var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+	        var message = [];
+	        if (!lengthValid) message.push("최소 8자 이상");
+	        if (!hasUpperCase) message.push("대문자");
+	        if (!hasLowerCase) message.push("소문자");
+	        if (!hasNumbers) message.push("숫자");
+	        if (!hasSpecialChar) message.push("특수문자(!@#$%^&*(),.?\":{}|<>)");
+
+	        if (message.length > 0) {
+	            $passwordHelp.html("비밀번호는 다음을 포함해야 합니다:<br>" + message.join(", "))
+	                         .removeClass('text-muted text-success')
+	                         .addClass('text-danger');
+	            passwordValid = false;
+	        } else {
+	            $passwordHelp.text("사용 가능한 비밀번호입니다 :)")
+	                         .removeClass('text-muted text-danger')
+	                         .addClass('text-success');
+	            passwordValid = true;
+	        }
+
+	        updateSubmitButtonState();
+	        return passwordValid;
+	    }
+
+	    // 비밀번호 확인 유효성 검사 함수
+	    function validateConfirmPassword() {
+	        var password = $userPassword.val();
+	        var confirmPassword = $confirmPassword.val();
+	        
+	        if (confirmPassword.length === 0) {
+	            $confirmPasswordHelp.text('비밀번호 확인을 입력해주세요.')
+	                                 .removeClass('text-muted text-success')
+	                                 .addClass('text-danger');
+	            confirmPasswordValid = false;
+	        } else if (password !== confirmPassword) {
+	            $confirmPasswordHelp.text('비밀번호가 일치하지 않습니다 :(')
+	                                 .removeClass('text-muted text-success')
+	                                 .addClass('text-danger');
+	            confirmPasswordValid = false;
+	        } else {
+	            $confirmPasswordHelp.text('비밀번호가 일치합니다 :)')
+	                                 .removeClass('text-muted text-danger')
+	                                 .addClass('text-success');
+	            confirmPasswordValid = true;
+	        }
+
+	        updateSubmitButtonState();
+	        return confirmPasswordValid;
+	    }
+
+	    // 제출 버튼 상태 업데이트 함수
+	    function updateSubmitButtonState() {
+	        $submitBtn.prop('disabled', !(emailValid && passwordValid && confirmPasswordValid));
+	    }
+
+	    // 입력 이벤트 리스너 설정
+	    $userPassword.attr('placeholder', '8자 이상, 대/소문자, 숫자, 특수문자 포함');
+	    $userPassword.on('input', validatePassword);
+	    $confirmPassword.on('input', validateConfirmPassword);
+
+	    // 이메일 중복 확인 (기존 코드와 동일)
+	    $('#checkEmailBtn').on('click', function(e) {
+	        e.preventDefault();
+	        var emailValue = $('#userEmail').val().trim();
+	        
+	        if (emailValue === '') {
+	            $('#emailCheckMessage').text('이메일을 입력해주세요.')
+	                .removeClass('text-muted')
+	                .addClass('text-danger');
+	            return;
+	        }
+	        
+	        $.ajax({
+	            url: '/check-email',
+	            type: 'POST',
+	            contentType: 'application/x-www-form-urlencoded',
+	            data: { userEmail: emailValue },
+	            success: function(response) {
+	                console.log("서버 응답:", response);
+	                if (response === "exists") {
+	                    $('#emailCheckMessage').text('이미 사용 중인 이메일입니다.').css('color', 'red');
+	                    emailValid = false;
+	                } else {
+	                    $('#emailCheckMessage').text('사용 가능한 이메일입니다.').css('color', 'green');
+	                    emailValid = true;
+	                }
+	                updateSubmitButtonState();
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Ajax 오류:", error);
+	                $('#emailCheckMessage').text('서버 오류가 발생했습니다. 다시 시도해주세요.').css('color', 'red');
+	                emailValid = false;
+	                updateSubmitButtonState();
+	            }
+	        });
+	    });
+
+	    // 폼 제출 이벤트
+	    $('#signupForm').on('submit', function(e) {
+	        e.preventDefault(); 
+	        
+	        // 모든 필드 최종 검증
+	        validatePassword();
+	        validateConfirmPassword();
+
+	        if (emailValid && passwordValid && confirmPasswordValid) {
+	            var name = $('#name').val().trim();
+	            var email = $('#userEmail').val().trim();
+	            var phone = $('#phone').val().trim();
+
+	            if (name === '' || email === '' || phone === '') {
+	                alert('모든 필드를 입력해주세요.');
+	                return;
+	            }
+
+	            if (!$('#agreement').is(':checked')) {
+	                alert('개인정보 수집 및 이용에 동의해주세요.');
+	                return;
+	            }
+
+	            alert('회원가입이 완료되었습니다!'); 
+	            this.submit(); 
+	        } else {
+	            alert('입력 정보를 다시 확인해주세요.');
+	        }
+	    });
+	});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Travel Picker 여행을 찾아드립니다</title>
+	<!-- Bootstrap 4 CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link rel="stylesheet" href="/css/recommend.css">
+	<link rel="stylesheet" href="/css/faq.css">
+	<link rel="stylesheet" href="/css/recentRecommendations.css">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+				<strong>Travel Picker</strong>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+				aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbar">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/">홈</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="/recommendation">AI 추천</a>
+					</li>
+					<li class="nav-item" th:if="${user != null}">
+						<a class="nav-link" href="/user/favorites">즐겨찾기</a>
+					</li>
+				</ul>
+				<!-- 로그인하지 않은 경우 -->
+				<ul class="navbar-nav">
+					<li class="nav-item" th:if="${user == null}">
+						<a class="nav-link" href="#signupModal" data-toggle="modal" id="signupLink">회원가입</a>
+					</li>
+					<li class="nav-item" th:if="${user == null}">
+						<a class="btn btn-primary" href="#loginModal" data-toggle="modal" id="loginLink">로그인</a>
+					</li>
+					<!-- 로그인한 경우 -->
+					<li class="nav-item dropdown" th:if="${user != null}">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span th:text="${user.userName + '님 환영합니다'}">사용자님 환영합니다</span>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#editProfileModal" data-toggle="modal"
+								id="editProfileLink">회원 정보 수정</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="/logout">로그아웃</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="hero-section">
+		<div class="container">
+			<div class="hero-content">
+				<h1 th:if="${user == null}">당신만의 특별한 여행을 찾아드려요</h1>
+				<h1 th:if="${user != null}" th:text="${user.userName + '님을 위한 여행지 AI 추천페이지'}">
+					사용자님, 어떤 여행을 찾고 계신가요?
+				</h1>
+				<a href="#surveyModal" class="btn btn-primary btn-lg" id="surveyLink">AI로 여행지 추천 받기</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="container py-5">
+		<h3 class="recommendations-title text-center">다른 사람들이 추천받은 여행지를 확인해보세요!</h3>
+		<div id="resultsContainer" class="container py-5" style="display: block;">
+			<div class="row" id="recommendationsContainer">
+				<!-- 여기에 추천 결과가 동적으로 삽입됩니다 -->
+			</div>
+		</div>
+	</div>
+
+
+	<!-- FAQ 섹션 -->
+	<div class="container mb-5">
+		<h3 class="text-center mb-4">자주 묻는 질문 (FAQ)</h3>
+		<div class="accordion" id="faqAccordion">
+			<!-- 첫 번째 FAQ 아이템 -->
+			<div class="card">
+				<div class="card-header" id="headingOne">
+					<h2 class="mb-0">
+						<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+							data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+							Q 여행 추천은 어떻게 받나요?
+						</button>
+					</h2>
+				</div>
+				<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#faqAccordion">
+					<div class="card-body">
+						여행 추천을 받기 위해서는 간단한 설문을 작성하셔야 합니다. 여행지 추천 받기를 클릭하여 설문에 응답해주세요.
+					</div>
+				</div>
+			</div>
+
+			<!-- 두 번째 FAQ 아이템 -->
+			<div class="card">
+				<div class="card-header" id="headingTwo">
+					<h2 class="mb-0">
+						<button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+							data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+							Q 추천받은 여행지는 어떻게 선택되나요?
+						</button>
+					</h2>
+				</div>
+				<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+					<div class="card-body">
+						추천된 여행지는 사용자의 선호도와 여행 데이터를 기반으로 AI가 자동으로 선택합니다.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="footer text-center">
+		<div class="container">
+			<p>&copy; 2024 Travel Picker. All Rights Reserved.</p>
+		</div>
+	</footer>
+
+	<div id="modalContainer"></div>
+
+	<!-- jQuery, Popper.js, Bootstrap JS -->
+	<!-- Scripts -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+	<script src="/js/recommendations.js"></script>
+	<script>
+		// recommendations.js 파일이 로드된 후 실행
+		window.addEventListener('load', function () {
+			// 페이지 로드 시 추천 데이터 불러오기
+			if (typeof fetchRecommendations === 'function') {
+				fetchRecommendations();
+			}
+
+			// 모달 관련 이벤트 핸들러들
+			$('#signupLink').click(function (event) {
+				event.preventDefault();
+				$('#signupModal').remove();
+				$.get('/user/signup', function (data) {
+					$('#modalContainer').html(data);
+					$('#signupModal').modal('show');
+				});
+			});
+
+			$('#loginLink').click(function (event) {
+				event.preventDefault();
+				$('#loginModal').remove();
+				$.get('/user/login', function (data) {
+					$('#modalContainer').html(data);
+					$('#loginModal').modal('show');
+				});
+			});
+
+			$('#surveyLink').click(function (event) {
+			    event.preventDefault();
+			    $('#surveyModal').remove();
+			    $.get('/survey/form', function (data) {
+			        $('#modalContainer').html(data);
+			        
+			        // 기존 스크립트 태그 제거 후 재로드
+			        $('script[src$="survey.js"]').remove();
+			        const scriptTag = document.createElement('script');
+			        scriptTag.src = '/path/to/survey.js';
+			        document.body.appendChild(scriptTag);
+			        
+			        $('#surveyModal').modal('show');
+			    });
+			});
+
+			$('#editProfileLink').click(function (event) {
+				event.preventDefault();
+				$('#editProfileModal').remove();
+				$.get('/user/mypage', function (data) {
+					$('#modalContainer').html(data);
+					$('#editProfileModal').modal('show');
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>

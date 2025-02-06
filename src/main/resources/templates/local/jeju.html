@@ -1,0 +1,78 @@
+<div class="modal fade local-modal" id="jejuModal" tabindex="-1" role="dialog" aria-labelledby="jejuModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">제주</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="video-container">
+					<iframe id="jejuVideo" src="https://www.youtube.com/embed/MdL8JG6wl_M?autoplay=1&mute=1&controls=0"
+						title="YouTube video player" allow="autoplay; encrypted-media; picture-in-picture"
+						allowfullscreen>
+					</iframe>
+				</div>
+
+				<p>제주도는 아름다운 자연경관을 자랑하는 힐링 여행지로, 다양한 해변, 폭포, 그리고 한라산 등 다양한 자연을 경험할 수 있습니다.</p>
+
+				<h5 class="section-title">♧ 관광 명소 ♧</h5>
+				<ul>
+					<li>한라산</li>
+					<li>제주 올레길</li>
+					<li>성산 일출봉</li>
+					<li>섭지코지</li>
+					<li>천지연 폭포</li>
+				</ul>
+
+				<h5 class="section-title">♧ 대표 음식 ♧</h5>
+				<ul>
+					<li>흑돼지 고기</li>
+					<li>갈치조림</li>
+					<li>제주 고등어</li>
+					<li>오메기떡</li>
+					<li>전복죽</li>
+				</ul>
+
+				<div class="img-container">
+					<div>
+						<img src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/1jPF/image/6dTBQAAJW6QLbLUaneCZWL3Vhf4.jpg"
+							alt="성산일출봉" class="img-fluid"
+							onclick="window.location.href='/map?location=성산일출봉&lat=33.4567&lng=126.9430'">
+						<p class="text-center">[성산일출봉]</p>
+					</div>
+					<div>
+						<img src="https://san.chosun.com/news/photo/201911/13272_55951_153.jpg" alt="제주도 이미지"
+							class="img-fluid"
+							onclick="window.location.href='/map?location=제주도&lat=33.4996&lng=126.5312'">
+						<p class="text-center">[제주도]</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<script>
+	$(document).ready(function () {
+		// 모달이 열리면 자동으로 동영상 재생
+		$('#jejuModal').on('shown.bs.modal', function () {
+			const iframe = $('#jejuVideo');
+			const src = iframe.attr('src');
+			iframe.attr('src', src + "&autoplay=1&mute=1");
+		});
+
+		// 모달이 닫히면 동영상 정지
+		$('#jejuModal').on('hidden.bs.modal', function () {
+			const iframe = $('#jejuVideo');
+			const src = iframe.attr('src');
+			iframe.attr('src', src.split('?')[0]);
+		});
+	});
+</script>

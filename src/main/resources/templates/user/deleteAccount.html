@@ -1,0 +1,43 @@
+<!-- 회원 탈퇴 확인 모달 -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">회원 탈퇴 확인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteAccountForm">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-3"></i>
+                        <h6 class="font-weight-bold">정말로 탈퇴하시겠습니까?</h6>
+                        <p class="text-muted">
+                            탈퇴하시면 모든 정보가 삭제되며,<br> 이 작업은 되돌릴 수 없습니다.<br>
+                            탈퇴를 진행하시려면 비밀번호를 입력해주세요.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deletePassword">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="deletePassword" name="password" required>
+                        <small class="form-text text-danger" id="deletePasswordError"></small>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-danger">탈퇴하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$('#deleteAccountModal').on('hidden.bs.modal', function () {
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+});
+</script>

@@ -1,0 +1,131 @@
+.weather-widget {
+    background: linear-gradient(135deg, #6EA1F4, #4A90E2);
+    color: white;
+    padding: 1.2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.weather-title {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.refresh-weather {
+    background: none;
+    border: none;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.refresh-weather:hover {
+    opacity: 1;
+}
+
+.refresh-weather:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.weather-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 날씨 메인 정보 크기 증가 */
+.weather-main {
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+
+}
+
+/* 온도 표시 크기 증가 */
+.weather-temp {
+    font-size: 3.2rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+    line-height: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+}
+.temp-value {
+    line-height: 1;
+}
+
+.temp-unit {
+    font-size: 1.8rem;
+    opacity: 0.9;
+    margin-top: 0.5rem; /* 단위를 위로 약간 올림 */
+}
+
+/* 날씨 상태 크기 증가 */
+.weather-condition {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    font-size: 1.4rem; /* 글자 크기 증가 */
+}
+
+.weather-condition i {
+    font-size: 1.6rem; /* 아이콘 크기 증가 */
+}
+
+.weather-details {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin-top: auto;
+}
+
+.weather-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+}
+
+.weather-detail:last-child {
+    margin-bottom: 0;
+}
+
+.weather-detail i {
+    width: 16px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.weather-info .feature-text.text-danger {
+    color: #FFE0E0 !important;
+    text-align: center;
+    font-size: 0.9rem;
+    background: rgba(255, 0, 0, 0.1);
+    padding: 0.8rem;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.weather-info .feature-text {
+    text-align: center;
+    margin: auto 0;
+}

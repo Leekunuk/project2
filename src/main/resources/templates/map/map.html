@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Travel Picker 여행을 추천해드려요!</title>
+	<style>
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+		}
+
+		#map {
+			width: 100%;
+			height: 91vh;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		#buttons {
+			display: flex;
+			justify-content: center;
+			padding: 15px 10px;
+			background-color: #ffffff;
+			box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+		}
+
+		#directionsBtn,
+		#closeBtn {
+			padding: 12px 28px;
+			font-size: 16px;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			background-color: #3498db;
+			color: white;
+			border: none;
+			border-radius: 25px;
+			/* 더 둥근 모서리 */
+			margin: 0 10px;
+			transition: all 0.3s ease;
+			cursor: pointer;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+		}
+
+		#directionsBtn {
+			background-color: #2ecc71;
+			/* 길찾기 버튼은 초록색 */
+		}
+
+		#closeBtn {
+			background-color: #e74c3c;
+			/* 닫기 버튼은 빨간색 */
+		}
+
+		#directionsBtn:hover,
+		#closeBtn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+
+		#directionsBtn:active,
+		#closeBtn:active {
+			transform: translateY(1px);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		}
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+	<div id="buttons">
+		<button id="directionsBtn">길찾기</button>
+		<button id="closeBtn">닫기</button>
+	</div>
+
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d0d50c9d3015d393b7632551eff16da0"></script>
+	<script>
+		kakao.maps.load(function () {
+			const params = new URLSearchParams(window.location.search);
+			const location = params.get('location');
+			const lat = parseFloat(params.get('lat'));
+			const lng = parseFloat(params.get('lng'));
+
+			if (!lat || !lng) {
+				alert('위치 정보가 잘못되었습니다.');
+				return;
+			}
+
+			const mapContainer = document.getElementById('map');
+			const mapOption = {
+				center: new kakao.maps.LatLng(lat, lng),
+				level: 7
+			};
+			const map = new kakao.maps.Map(mapContainer, mapOption);
+
+			const marker = new kakao.maps.Marker({
+				position: new kakao.maps.LatLng(lat, lng)
+			});
+			marker.setMap(map);
+
+			const infowindow = new kakao.maps.InfoWindow({
+				content: `<div style="padding:5px;">${location}</div>`
+			});
+			infowindow.open(map, marker);
+
+			document.getElementById('directionsBtn').addEventListener('click', function () {
+				const directionsUrl = `https://map.kakao.com/link/to/${location},${lat},${lng}`;
+				window.open(directionsUrl, '_blank');
+			});
+
+			document.getElementById('closeBtn').addEventListener('click', function () {
+				window.history.back();
+			});
+		});
+	</script>
+</body>
+
+</html>

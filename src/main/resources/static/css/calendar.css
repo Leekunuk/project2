@@ -1,0 +1,181 @@
+#calendar {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-top: 1rem;
+}
+
+.calendar-header {
+    padding: 10px 0;
+}
+
+.calendar-title {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.calendar-weekdays {
+    font-weight: bold;
+}
+
+.calendar-weekdays div {
+    width: 14.28%;
+    text-align: center;
+    color: #666;
+}
+
+.calendar-weekdays div:first-child {
+    color: #ff4d4d; /* 일요일 색상 */
+}
+
+.calendar-weekdays div:last-child {
+    color: #4d79ff; /* 토요일 색상 */
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative; /* 툴팁 위치 지정을 위해 추가 */
+}
+
+.calendar-day:hover {
+    background-color: #f0f0f0;
+}
+
+.calendar-day.today {
+    background-color: #007bff;
+    color: white !important; /* 오늘 날짜는 항상 흰색으로 표시 */
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+}
+
+.calendar-day.holiday {
+    font-weight: bold;
+}
+
+/* 툴팁 스타일 */
+.holiday-tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* 툴팁 화살표 */
+.holiday-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+/* 호버 시 툴팁 표시 */
+.calendar-day:hover .holiday-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.btn-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.btn-link:hover {
+    color: #0056b3;
+    background-color: #f8f9fa;
+}
+
+.feature-box {
+    background: #fff;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+	transform: none !important; /* 강제로 transform 효과 제거 */
+	transition: none !important; /* 모든 transition 효과 제거 */
+}
+
+.time-display {
+    position: absolute;
+    bottom: 2rem;  /* 아래에서 2rem 떨어진 위치 */
+    left: 50%;     /* 왼쪽에서 50% 위치 */
+    transform: translateX(-50%);  /* 자신의 너비의 절반만큼 왼쪽으로 이동 */
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: #666;
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 1px;
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    width: 100%;  /* 내용에 맞게 너비 조정 */
+    min-width: 200px;  /* 최소 너비 설정 */
+	z-index: -1;
+}
+
+.time-display .colon {
+    animation: blink 1s infinite;
+    opacity: 1;
+    display: inline-block;
+    width: 16px;
+}
+
+.time-display .period {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-left: 8px;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .calendar-day {
+        font-size: 0.8rem;
+    }
+
+    .calendar-title {
+        font-size: 1rem;
+    }
+
+    .holiday-tooltip {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+}

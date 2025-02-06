@@ -1,0 +1,149 @@
+/* index.css */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.hero-section {
+    background-image: url('/img/survey1.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    color: white;
+    padding: 150px 0;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-section h1 {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 3rem;
+	color: white;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.feature-box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-10px);
+}
+
+.feature-box i {
+    font-size: 3rem;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.card-section {
+    margin-top: 50px;
+}
+
+/* Travel card 스타일 */
+.travel-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;  /* 카드들 사이의 간격을 줄였습니다 */
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fff;
+}
+
+.travel-card:hover {
+    transform: scale(1.05);
+}
+
+.travel-card img {
+    height: 200px;  /* 이미지 높이를 줄여서 공백을 줄였습니다 */
+    object-fit: cover;
+    width: 100%;
+}
+
+.card-body {
+    padding: 10px 15px; /* 카드 내부 패딩을 줄여서 공백을 최소화 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.card-title {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 10px; /* 제목과 내용 간의 간격 줄이기 */
+}
+
+.card-text {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 10px; /* 내용과 버튼 간의 간격 줄이기 */
+}
+
+.card-body .btn {
+    margin-top: auto; /* 버튼을 카드 하단에 고정 */
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+
+/* 모바일 화면에서 카드 내부 패딩 및 텍스트 크기 조정 */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .travel-card img {
+        height: 180px; /* 모바일에서 이미지 크기 줄이기 */
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+    }
+
+    .card-body {
+        padding: 10px; /* 모바일에서 패딩 줄이기 */
+    }
+}

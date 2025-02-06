@@ -1,0 +1,97 @@
+<!-- 회원 정보 수정 모달 -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel"
+	data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editProfileModalLabel">회원 정보 수정</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="editProfileForm" th:action="@{/user/mypage/update}" method="post">
+					<div class="form-group">
+						<label for="name">이름</label>
+						<input type="text" class="form-control" id="name" name="userName" th:value="${user.userName}"
+							required>
+					</div>
+
+					<div class="form-group">
+						<label for="email">이메일</label>
+						<input type="email" class="form-control" id="email" name="userEmail"
+							th:value="${user.userEmail}" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="currentPassword">현재 비밀번호</label>
+						<input type="password" class="form-control" id="currentPassword" name="currentPassword"
+							placeholder="현재 비밀번호를 입력해주세요">
+					</div>
+
+					<div class="form-group">
+						<label for="newPassword">새 비밀번호</label>
+						<input type="password" class="form-control" id="newPassword" name="newPassword"
+							placeholder="변경을 원하시면 입력해주세요">
+						<small id="passwordHelp" class="form-text text-muted"></small>
+					</div>
+
+					<div class="form-group">
+						<label for="confirmPassword">새 비밀번호 확인</label>
+						<input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+						<small id="confirmPasswordHelp" class="form-text text-muted"></small>
+					</div>
+
+					<div class="form-group">
+						<label for="phone">연락처</label>
+						<input type="tel" class="form-control" id="phone" name="userPhone" th:value="${user.userPhone}"
+							required>
+					</div>
+
+					<div class="modal-footer d-block">
+						<!-- 기본 버튼 영역 -->
+						<div class="row mb-3">
+							<div class="col-6">
+								<button type="button" class="btn btn-secondary w-100" data-dismiss="modal">취소</button>
+							</div>
+							<div class="col-6">
+								<button type="submit" class="btn btn-primary w-100" id="editProfileSubmitBtn" disabled>수정하기</button>
+							</div>
+						</div>
+
+						<!-- 회원 탈퇴 영역 -->
+						<div class="row">
+							<div class="col-12">
+								<hr>
+								<div class="text-center">
+									<small class="d-block mb-2 text-danger">회원 탈퇴를 원하시면 아래 버튼을 클릭해주세요.</small>
+									<button type="button" class="btn btn-outline-danger w-50" id="deleteAccountLink"
+										data-toggle="modal" data-target="#deleteAccountModal"
+										onclick="event.preventDefault();">
+										<i class="fas fa-user-times"></i> 회원 탈퇴
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 모달을 로드할 컨테이너 -->
+<div id="modalContainer"></div>
+
+<script th:src="@{/js/editAccount.js}"></script>
+<script th:src="@{/js/deleteAccount.js}"></script>
+<script>
+	$('#deleteAccountLink').click(function (event) {
+		event.preventDefault();
+		$('#deleteAccountModal').remove();
+		$.get('/user/mypage/delete', function (data) {
+			$('#modalContainer').html(data);
+			$('#deleteAccountModal').modal('show');
+		});
+	});
+</script>

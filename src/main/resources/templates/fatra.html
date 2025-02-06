@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Picker</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fatra.css">
+
+    <style>
+        .travel-card img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            margin-bottom: 20px;
+        }
+
+        .card-section {
+            margin-top: 20px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: black;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/"><strong>Travel Picker</strong></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><a class="nav-link" href="/">홈</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/recommendation">AI 추천</a></li>
+                    <li class="nav-item" th:if="${user != null}"><a class="nav-link" href="/favorites">즐겨찾기</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item" th:if="${user == null}">
+                        <a class="nav-link" href="#signupModal" data-toggle="modal" id="signupLink">회원가입</a>
+                    </li>
+                    <li class="nav-item" th:if="${user == null}">
+                        <a class="btn btn-primary" href="#loginModal" data-toggle="modal" id="loginLink">로그인</a>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${user != null}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown">
+                            <span th:text="${user.userName + '님 환영합니다'}">사용자님 환영합니다</span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#editProfileModal" data-toggle="modal"
+                                id="editProfileLink">회원 정보 수정</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout">로그아웃</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>인기 여행지를 추천해드려요!</h1>
+    </div>
+
+    <!-- Travel Cards Section -->
+    <div class="container card-section">
+        <h3 class="text-center mb-4">인기 여행지 추천</h3>
+        <div class="row">
+            <!-- JavaScript가 데이터를 동적으로 추가할 부분 -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">여행지 정보</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>홈페이지:</strong> <span id="modalHomepage">정보를 불러오는 중...</span></p>
+                    <p><strong>소개:</strong> <span id="modalOverview">정보를 불러오는 중...</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2024 Travel Picker. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/popular.js"></script>
+    <script th:inline="javascript">
+		/*<![CDATA[*/
+		window.apiKey = /*[[${popularApiKey}]]*/ '';
+		/*]]>*/
+	</script>
+    <script>
+        $(document).ready(function () {
+            function handleModal(linkId, modalId, url) {
+                $(linkId).click(function (event) {
+                    event.preventDefault();
+                    $(modalId).remove();
+                    $.get(url, function (data) {
+                        $('#modalContainer').html(data);
+                        $(modalId).modal('show');
+                    });
+                });
+            }
+
+            // Handle modal events
+            handleModal('#signupLink', '#signupModal', '/user/signup');
+            handleModal('#loginLink', '#loginModal', '/user/login');
+            handleModal('#editProfileLink', '#editProfileModal', '/user/mypage');
+        });
+    </script>
+</body>
+
+</html>

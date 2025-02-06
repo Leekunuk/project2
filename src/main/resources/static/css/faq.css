@@ -1,0 +1,26 @@
+.accordion .card-header {
+    background-color: white;
+    border-bottom: none;
+}
+
+.accordion .btn-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.accordion .btn-link:hover,
+.accordion .btn-link:focus {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.accordion .card {
+    border: 1px solid rgba(0,0,0,.125);
+    margin-bottom: 5px;
+}
+
+.accordion .card-body {
+    padding: 1.25rem;
+    background-color: #f8f9fa;
+}

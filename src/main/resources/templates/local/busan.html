@@ -1,0 +1,78 @@
+<div class="modal fade local-modal" id="busanModal" tabindex="-1" role="dialog" aria-labelledby="busanModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">부산</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="video-container">
+					<iframe id="busanVideo"
+						src="https://www.youtube.com/embed/zbzjGBfcGYs?autoplay=1&mute=1&controls=0&start=0&end=90&loop=1"
+						title="YouTube video player" allow="autoplay; encrypted-media; picture-in-picture"
+						allowfullscreen>
+					</iframe>
+				</div>
+
+				<p>부산은 바다와 도시가 어우러진 매력적인 여행지로, 해운대, 광안리 등 다양한 해변을 즐기며 도시와 바다를 모두 경험할 수 있습니다.</p>
+
+				<h5 class="section-title">♧ 관광 명소 ♧</h5>
+				<ul>
+					<li>해운대 해수욕장</li>
+					<li>광안리 해수욕장</li>
+					<li>부산 타워</li>
+					<li>자갈치 시장</li>
+					<li>부산 민속촌</li>
+				</ul>
+
+				<h5 class="section-title">♧ 대표 음식 ♧</h5>
+				<ul>
+					<li>밀면</li>
+					<li>돼지국밥</li>
+					<li>부산 오징어</li>
+					<li>씨앗호떡</li>
+					<li>복국</li>
+				</ul>
+
+				<div class="img-container">
+					<div>
+						<img src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/7wcA/image/1G1ucxhYrBhPnDHxlqVn64IRGCA.jpg"
+							alt="해운대 해수욕장" class="img-fluid"
+							onclick="window.location.href='/map?location=해운대 해수욕장&lat=35.1587&lng=129.1608'">
+						<p>[해운대 해수욕장]</p>
+					</div>
+					<div>
+						<img src="https://flexible.img.hani.co.kr/flexible/normal/970/647/imgdb/original/2024/0703/20240703503224.jpg"
+							alt="광안리 해수욕장" class="img-fluid"
+							onclick="window.location.href='/map?location=광안리 해수욕장&lat=35.153344&lng=129.118623'">
+						<p>[광안리 해수욕장]</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<script>
+	$(document).ready(function () {
+		// 모달이 열리면 자동으로 동영상 재생
+		$('#busanModal').on('shown.bs.modal', function () {
+			const iframe = $('#busanVideo');
+			const src = iframe.attr('src');
+			iframe.attr('src', src + "&autoplay=1&mute=1");
+		});
+
+		// 모달이 닫히면 동영상 정지
+		$('#busanModal').on('hidden.bs.modal', function () {
+			const iframe = $('#busanVideo');
+			const src = iframe.attr('src');
+			iframe.attr('src', src.split('?')[0]);
+		});
+	});
+</script>
